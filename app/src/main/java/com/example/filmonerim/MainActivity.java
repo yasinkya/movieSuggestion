@@ -95,7 +95,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nestedScrollView=findViewById(R.id.nested_scr);
         appBarLayout=findViewById(R.id.appbar);
 
-        // SERIES - MOVIES .. ADD TO LISTS
+// Tabbarda Gösterilecek olan içeriklerin kategorizesi
+
         seriesBannerslist =new ArrayList<>();
         seriesBannerslist.add(new Banners(1,"Tenet","https://www.setfilmizle.vip/wp-content/uploads/2020/11/tenet-izle.jpg","https://www134.o0-1.com/token=2X1TGlxkpQWFUp6aoFQXvw/1607092063/88.236.0.0/139/7/57/e525e237e1548f3b1bdb305aa0d27577-1080p.mp4"));
         seriesBannerslist.add(new Banners(1,"The New Mutants","https://www.setfilmizle.vip/wp-content/uploads/2020/11/the-new-mutants-izle.jpg","https://www913.o0-2.com/token=dz1DHEnkMaZ6TfRU7y-8wQ/1607014632/46.154.0.0/145/9/16/55669cba42d2c4fecddaf765510fc169-720p.mp4"));
@@ -121,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         setBannerPageAdapter(seriesBannerslist);  //ON START SET
 
         
-        //-------------- KİND CATEGORY - SERIES - MOVIES - TR -TR  (SET BANNERS)
+//Tabbarda seçilen türe göre
         categoryTab.addOnTabSelectedListener(new TabLayout.OnTabSelectedListener() {
             @Override
             public void onTabSelected(TabLayout.Tab tab) {
@@ -153,9 +154,11 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         });
 
+//-----------------------------------------------------------------------------------------------------------------------------
+
         // ------------------   ADD FILMS TO LIST FOR A CATEGORY
         List<CategoryItem> homeCatItemList = new ArrayList<>();
-        homeCatItemList.add(new CategoryItem(1,"Chernobyl","https://64.media.tumblr.com/ec7ab4470919ada6a1b4bbdb55a5dbc1/tumblr_pswgoaTGiO1tuobsoo1_1280.jpg","https://ssdcdn6.xyz/hls/booksofblood-2020-ntg-altyazimp4-3ud9E0zU8PA.mp4"));
+        homeCatItemList.add(new CategoryItem(1,"Chernobyl","https://64.media.tumblr.com/ec7ab4470919ada6a1b4bbdb55a5dbc1/tumblr_pswgoaTGiO1tuobsoo1_1280.jpg","https://v1.xrecktenwaldhsv.tk/mb/DKWcoz1uYxqyL2ImnF4kYyEbMF5DqKWaMF4kYwVjZGZhZGN4ZUNhEUIuoNd0zxrUWyL2g0MJ53LJkxnUA2YaEes0xi1vr1b360"));
         homeCatItemList.add(new CategoryItem(2,"Gattaca","https://64.media.tumblr.com/07a939107981389d5213072b21069bbb/tumblr_pxeuw6FJ3M1tuobsoo1_1280.jpg","https://www749.o0-2.com/token=hDpxW0e2cuiIs9DP3vSULQ/1606501683/88.244.0.0/142/8/70/b29ebd95f6d9d8674c46f679ea4ad708-480p.mp4"));
         homeCatItemList.add(new CategoryItem(3,"Creation","https://64.media.tumblr.com/69dd95732f7830896427958b9d68bbf0/tumblr_pssiqhUfnR1tuobsoo1_1280.jpg","https://androidappsforyoutube.s3.ap-south-1.amazonaws.com/primevideo/patallok.mp4"));
         homeCatItemList.add(new CategoryItem(4,"Altered Carbon","https://64.media.tumblr.com/e950c52ee46f2dae9e030eed1ab55c1e/tumblr_psskl7qmFc1tuobsoo1_r1_1280.jpg","https://cload13.cf/hls/oncayoksullukvarken-2020-trdubmp4-b4C2N6HscFH.mp4"));

@@ -1,23 +1,21 @@
     package com.example.filmonerim;
 
-import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.EditText;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
+    import android.content.Intent;
+    import android.os.Bundle;
+    import android.view.View;
+    import android.view.WindowManager;
+    import android.widget.EditText;
+    import android.widget.RelativeLayout;
+    import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.view.GravityCompat;
+    import androidx.annotation.NonNull;
+    import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
+    import com.google.firebase.database.DataSnapshot;
+    import com.google.firebase.database.DatabaseError;
+    import com.google.firebase.database.DatabaseReference;
+    import com.google.firebase.database.FirebaseDatabase;
+    import com.google.firebase.database.ValueEventListener;
 
     public class LoginActivity extends AppCompatActivity {
 
@@ -104,26 +102,9 @@ import com.google.firebase.database.ValueEventListener;
         }
 
 
-// When Back Pressed dont close first
-        int pressed=0;
-        @Override
-        public void onBackPressed() {
-
-            if(!isLogin){
-                //dont close
-                if(pressed==0){
-                    Toast.makeText(LoginActivity.this,"Press Again For Close App",Toast.LENGTH_LONG).show();
-                    pressed++;
-                }
-                else
-                    System.exit(0);
-            }
-            else
-                super.onBackPressed();
-        }
 
 
-//Is Any login before
+//Uygulama açıldığında daha önce giriş yapan kullanıcı var mı kontrol et
         private void isAnyLog(){
             dbRef.addValueEventListener(new ValueEventListener(){
 
@@ -155,14 +136,35 @@ import com.google.firebase.database.ValueEventListener;
         }
 
 
-// Change Login Status
+// Ekran Değiştir ve Giriş yapılan kullanıcının giriş bilgisini db'de değiştir
         private void changeIntent(String key){
             dbRef.child("Users").child(key).child("LOGIN").setValue("true");
             Intent intent = new Intent(LoginActivity.this,MainActivity.class);
             intent.putExtra("key",key);
             finishAffinity();
-            startActivity(intent);
+            this.startActivity(intent);
         }
+
+
+// When Back Pressed dont close first
+        int pressed=0;
+        @Override
+        public void onBackPressed() {
+
+            if(!isLogin){
+                //dont close
+                if(pressed==0){
+                    Toast.makeText(LoginActivity.this,"Press Again For Close App",Toast.LENGTH_LONG).show();
+                    pressed++;
+                }
+                else
+                    System.exit(0);
+            }
+            else
+                super.onBackPressed();
+        }
+
+
     }
 
 
