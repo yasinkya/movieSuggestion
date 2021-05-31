@@ -24,14 +24,12 @@ import com.example.filmonerim.R;
 import com.example.filmonerim.model.AllCategories;
 import com.example.filmonerim.model.Banners;
 import com.example.filmonerim.model.CategoryItem;
+import com.example.filmonerim.model.FirebaseData;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -111,10 +109,10 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             notificationManager.notify(1,notification);*/
 
-
+        FirebaseData firebaseData = new FirebaseData("Movies");
         seriesBannerslist =new ArrayList<>();
 
-        readData(list -> {
+        firebaseData.readData(list -> {
             for (Integer i =0; i<list.size();i++){
                 try {
                     seriesBannerslist.add(new Banners(
@@ -123,21 +121,14 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             list.get(i).getMovieImgUrl(),
                             list.get(i).getMovieFileUrl()
                     ));
-                    setBannerPageAdapter(seriesBannerslist);  //ON START SET
+
                 }catch (Exception e){
 
                 }
 
             }
+            setBannerPageAdapter(seriesBannerslist);  //ON START SET
         });
-
-
-
-
-        //seriesBannerslist.add(banner);
-        //seriesBannerslist.add(new Banners(1,"Tenet","https://www.mobilfilm.org/uploads/posts/2020-11/1606248647_tenet-mobil-indir.jpeg","OBawdbFF7M8"));
-        //seriesBannerslist.add(new Banners(1,"Captive","https://www.mobilfilm.org/uploads/posts/2021-05/1622061927_captive-katherines-lullaby-mobil-indir.jpg","https://www58.zippyshare.com/d/PgwI9Ccn/37434/Captive.2020.TRALT.3gp"));
-        //seriesBannerslist.add(new Banners(1,"Unicorn Store","https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTmaiDaPhUwZKar0vusxEdM8ePDCl1f1TCoOH2JOljpCCim9OO1","https://doc-0c-24-docs.googleusercontent.com/docs/securesc/9jsgo988bi685jqimcm92fjtl4b76aje/od8c18oqq146lsp7hjd89hjjdn9tc9kh/1622387025000/04412419014754997686/12004855264844732216/1nkAHD4dR5k9j8GUy09Curgs9CC76P9y0?e=download&authuser=0&nonce=u0cvnskm7vm3m&user=12004855264844732216&hash=bpfgan0npniibgvkiv82d7o229k6sg49"));
 
         moviesBannerlist =new ArrayList<>();
         moviesBannerlist.add(new Banners(1,"My Spy","https://www.setfilmizle.vip/wp-content/uploads/2020/04/my-spy-izle.jpg","https://www290.o0-1.com/token=J3riwN7ZwaJAq0uHSq42YQ/1607015040/46.154.0.0/133/8/13/278a4a141eae5f7b0d5d7587b7d6e138-1080p.mp4"));
@@ -217,49 +208,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
         setMainRecycler(allCategoriesList);
 
-    }
-
-    private void readData(FirebaseCallback firebaseCallback){
-
-        List<Banners> banners= new ArrayList<>();
-        dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(@NonNull DataSnapshot snapshot) {
-
-                for(DataSnapshot ds:snapshot.child("Films").child("Top").child("Series").getChildren()){
-
-                    banners.add(new Banners(
-                            Integer.parseInt(ds.getKey().toString()),
-                            ds.child("Name").getValue().toString(),
-                            ds.child("ImageUrl").getValue().toString(),
-                            ds.child("VideoId").getValue().toString()
-                    ));
-
-                    /*  banner =new Banners(
-                            Integer.parseInt(ds.getKey().toString()),
-                            ds.child("Name").getValue().toString(),
-                            ds.child("ImageUrl").getValue().toString(),
-                            ds.child("VideoId").getValue().toString()
-                    );
-
-                    banner.setMovieId(Integer.parseInt(ds.getKey().toString()));
-                    banner.setMovieName(ds.child("Name").getValue().toString());
-                    banner.setMovieImgUrl(ds.child("ImageUrl").getValue().toString());
-                    banner.setMovieFileUrl(ds.child("VideoId").getValue().toString());
-                    */
-                }
-                firebaseCallback.onCallback(banners);
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-        });
-    }
-
-    private interface FirebaseCallback {
-        void onCallback(List<Banners> list);
     }
 
 
