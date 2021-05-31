@@ -15,14 +15,16 @@
         android:theme="@style/Theme.FilmOnerim">
 
         <activity android:name=".Screens.LoginActivity">
+
+        </activity>
+
+        <activity android:name=".Screens.MainActivity" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <activity android:name=".Screens.MainActivity" />
 
         <activity android:name=".model.MovieDetails" />
 
