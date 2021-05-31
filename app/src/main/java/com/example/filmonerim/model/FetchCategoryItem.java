@@ -11,29 +11,27 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FirebaseData {
-
+public class FetchCategoryItem {
     //FirebaseDatabase
     DatabaseReference dbRef = FirebaseDatabase.getInstance().getReference();
     FirebaseDatabase dataBase =FirebaseDatabase.getInstance();
 
-    private String element,tOc;
+    private String element;
 
-    public FirebaseData(String element){
+    public FetchCategoryItem(String element){
         this.element=element;
-        this.tOc=tOc;
     }
 
-    public void readData(FirebaseCallback firebaseCallback){
+    public void readData(CategoryCallback categoryCallback){
 
-        List<Banners> banners= new ArrayList<>();
+        List<CategoryItem> categoryItems= new ArrayList<>();
         dbRef.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
 
-                for(DataSnapshot ds:snapshot.child("Films").child("Top").child(element).getChildren()){
+                for(DataSnapshot ds:snapshot.child("Films").child("Categories").child(element).getChildren()){
 
-                    banners.add(new Banners(
+                    categoryItems.add(new CategoryItem(
                             Integer.parseInt(ds.getKey().toString()),
                             ds.child("Name").getValue().toString(),
                             ds.child("ImageUrl").getValue().toString(),
@@ -41,7 +39,7 @@ public class FirebaseData {
                     ));
 
                 }
-                firebaseCallback.onCallback(banners);
+                categoryCallback.onCallback(categoryItems);
             }
 
             @Override
@@ -51,7 +49,7 @@ public class FirebaseData {
         });
     }
 
-    public interface FirebaseCallback {
-        void onCallback(List<Banners> list);
+    public interface CategoryCallback {
+        void onCallback(List<CategoryItem> list);
     }
 }
