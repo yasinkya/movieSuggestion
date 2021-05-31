@@ -46,7 +46,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     BannerPageAdapter bannerPageAdapter;
     TabLayout indicatoTab,categoryTab;
     ViewPager bannerviewPager;
-    List<Banners> seriesBannerslist,moviesBannerlist,TRSbannerlist,TRMbannerlist;
+
+    List<Banners> seriesBannerslist,moviesBannerlist,TRSbannerlist,TRMbannerlist,bannerPage;
 
     Timer slide;
     NestedScrollView nestedScrollView;
@@ -61,6 +62,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     // SlideMenu Elements
     DrawerLayout drawerLayout;
     NavigationView navigationView;
+
+    FirebaseData firebaseData;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -95,6 +98,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         nestedScrollView=findViewById(R.id.nested_scr);
         appBarLayout=findViewById(R.id.appbar);
 
+
+
 // Tabbarda Gösterilecek olan içeriklerin kategorizesi
 
         /*
@@ -109,27 +114,8 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
             notificationManager.notify(1,notification);*/
 
-        FirebaseData firebaseData = new FirebaseData("Movies");
-        seriesBannerslist =new ArrayList<>();
-
-        firebaseData.readData(list -> {
-            for (Integer i =0; i<list.size();i++){
-                try {
-                    seriesBannerslist.add(new Banners(
-                            list.get(i).getMovieId(),
-                            list.get(i).getMovieName(),
-                            list.get(i).getMovieImgUrl(),
-                            list.get(i).getMovieFileUrl()
-                    ));
-
-                }catch (Exception e){
-
-                }
-
-            }
-            setBannerPageAdapter(seriesBannerslist);  //ON START SET
-        });
-
+        fetchBanner("Series");
+/*
         moviesBannerlist =new ArrayList<>();
         moviesBannerlist.add(new Banners(1,"My Spy","https://www.setfilmizle.vip/wp-content/uploads/2020/04/my-spy-izle.jpg","https://www290.o0-1.com/token=J3riwN7ZwaJAq0uHSq42YQ/1607015040/46.154.0.0/133/8/13/278a4a141eae5f7b0d5d7587b7d6e138-1080p.mp4"));
         moviesBannerlist.add(new Banners(1,"Parasite","https://www.setfilmizle.vip/wp-content/uploads/2019/08/parazit-2019-izle.jpg","https://www998.o0-2.com/token=gJvAIr8jSLlYRsMwDX1efQ/1607015106/46.154.0.0/116/b/60/3a88231969d92b928573fdfa6b96e60b-1080p.mp4"));
@@ -147,7 +133,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TRMbannerlist.add(new Banners(1,"la familia","https://64.media.tumblr.com/1699ae7de166f4968d7b06870e3b68fd/61f85c26e254a608-ba/s1280x1920/499df68329025e5079cd9202f588c3592881fec6.jpg",""));
         TRMbannerlist.add(new Banners(1,"1987","https://64.media.tumblr.com/8dc4b2c2e514a299198552eaeca7ef62/tumblr_pt5be9pGtx1tuobsoo1_1280.jpg","https://www5.zippyshare.com/d/7P0zSOBz/1601616/Run.2020.TRALT.II.mp4"));
 
-
+*/
 
 
         
@@ -158,19 +144,23 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 switch(tab.getPosition()){
                     case 1:
                         setScrDef();
-                        setBannerPageAdapter(moviesBannerlist);
+                        fetchBanner("Movies");
+                        //setBannerPageAdapter(moviesBannerlist);
                         break;
                     case 2:
                         setScrDef();
-                        setBannerPageAdapter(TRSbannerlist);
-
+                        fetchBanner("TrMovies");
+                        //setBannerPageAdapter(TRSbannerlist);
                         break;
                     case 3:
-                        setBannerPageAdapter(TRMbannerlist); // ekleee
+                        setScrDef();
+                        fetchBanner("TrSeries");
+                        //setBannerPageAdapter(TRMbannerlist); // ekleee
                         break;
                         default:
                             setScrDef();
-                            setBannerPageAdapter(seriesBannerslist); //ekleeee
+                            fetchBanner("Series");
+                            //setBannerPageAdapter(seriesBannerslist); //ekleeee
                 }
             }
             @Override
@@ -211,6 +201,29 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
+    public void fetchBanner(String element){
+        firebaseData = new FirebaseData(element);
+        bannerPage =new ArrayList<>();
+
+        firebaseData.readData(list -> {
+            for (Integer i =0; i<list.size();i++){
+                try {
+                    bannerPage.add(new Banners(
+                            list.get(i).getMovieId(),
+                            list.get(i).getMovieName(),
+                            list.get(i).getMovieImgUrl(),
+                            list.get(i).getMovieFileUrl()
+                    ));
+
+                }catch (Exception e){
+
+                }
+
+            }
+            setBannerPageAdapter(bannerPage);
+        });
+    }
+
 //  Navigation bar items
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -249,9 +262,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
     }
 
 
-
-
-
 // When Back Pressed close slide menu if its open
     @Override
     public void onBackPressed() {
@@ -262,7 +272,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         else
             super.onBackPressed();
     }
-
 
 
 //BANNERS PAGE
@@ -299,7 +308,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         @Override
         public void run() {
             MainActivity.this.runOnUiThread(()->{
-                if(bannerviewPager.getCurrentItem() < seriesBannerslist.size()-1){
+                if(bannerviewPager.getCurrentItem() < bannerviewPager.getChildCount()-1){
                     bannerviewPager.setCurrentItem(bannerviewPager.getCurrentItem()+1);
                 }
                 else
