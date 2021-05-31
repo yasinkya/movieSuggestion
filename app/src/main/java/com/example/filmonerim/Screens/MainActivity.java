@@ -1,6 +1,5 @@
 package com.example.filmonerim.Screens;
 
-import android.app.Notification;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,8 +11,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.core.view.GravityCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -40,8 +37,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import static com.example.filmonerim.NotificationChannel.App.CHANNEL_1_ID;
 
 
 public class MainActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -104,38 +99,45 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
 
 // Tabbarda Gösterilecek olan içeriklerin kategorizesi
 
-        readData(list -> {
+        /*
             NotificationManagerCompat notificationManager = NotificationManagerCompat.from(MainActivity.this);
             Notification notification= new NotificationCompat.Builder(MainActivity.this,CHANNEL_1_ID)
                     .setContentTitle("WELCOME")
-                    .setContentText(String.valueOf(list.get(1).getMovieName()))
+                    .setContentText(String.valueOf(list.get(1).getMovieId()))
                     .setSmallIcon(R.drawable.mov)
                     .setPriority(NotificationCompat.PRIORITY_HIGH)
                     .setCategory(NotificationCompat.CATEGORY_MESSAGE)
                     .build();
 
-            notificationManager.notify(1,notification);
-        });
+            notificationManager.notify(1,notification);*/
+
 
         seriesBannerslist =new ArrayList<>();
 
+        readData(list -> {
+            for (Integer i =0; i<list.size();i++){
+                try {
+                    seriesBannerslist.add(new Banners(
+                            list.get(i).getMovieId(),
+                            list.get(i).getMovieName(),
+                            list.get(i).getMovieImgUrl(),
+                            list.get(i).getMovieFileUrl()
+                    ));
+                    setBannerPageAdapter(seriesBannerslist);  //ON START SET
+                }catch (Exception e){
+
+                }
+
+            }
+        });
 
 
 
-/*
-        for (Integer i =0; i<banners.size();i++){
-            seriesBannerslist.add(new Banners(
-                    banners.get(i).getMovieId(),
-                    banners.get(i).getMovieName(),
-                    banners.get(i).getMovieImgUrl(),
-                    banners.get(i).getMovieFileUrl()
-            ));
-        }
-*/
+
         //seriesBannerslist.add(banner);
         //seriesBannerslist.add(new Banners(1,"Tenet","https://www.mobilfilm.org/uploads/posts/2020-11/1606248647_tenet-mobil-indir.jpeg","OBawdbFF7M8"));
-        seriesBannerslist.add(new Banners(1,"Captive","https://www.mobilfilm.org/uploads/posts/2021-05/1622061927_captive-katherines-lullaby-mobil-indir.jpg","https://www58.zippyshare.com/d/PgwI9Ccn/37434/Captive.2020.TRALT.3gp"));
-        seriesBannerslist.add(new Banners(1,"Unicorn Store","https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTmaiDaPhUwZKar0vusxEdM8ePDCl1f1TCoOH2JOljpCCim9OO1","https://doc-0c-24-docs.googleusercontent.com/docs/securesc/9jsgo988bi685jqimcm92fjtl4b76aje/od8c18oqq146lsp7hjd89hjjdn9tc9kh/1622387025000/04412419014754997686/12004855264844732216/1nkAHD4dR5k9j8GUy09Curgs9CC76P9y0?e=download&authuser=0&nonce=u0cvnskm7vm3m&user=12004855264844732216&hash=bpfgan0npniibgvkiv82d7o229k6sg49"));
+        //seriesBannerslist.add(new Banners(1,"Captive","https://www.mobilfilm.org/uploads/posts/2021-05/1622061927_captive-katherines-lullaby-mobil-indir.jpg","https://www58.zippyshare.com/d/PgwI9Ccn/37434/Captive.2020.TRALT.3gp"));
+        //seriesBannerslist.add(new Banners(1,"Unicorn Store","https://encrypted-tbn2.gstatic.com/images?q=tbn:ANd9GcTmaiDaPhUwZKar0vusxEdM8ePDCl1f1TCoOH2JOljpCCim9OO1","https://doc-0c-24-docs.googleusercontent.com/docs/securesc/9jsgo988bi685jqimcm92fjtl4b76aje/od8c18oqq146lsp7hjd89hjjdn9tc9kh/1622387025000/04412419014754997686/12004855264844732216/1nkAHD4dR5k9j8GUy09Curgs9CC76P9y0?e=download&authuser=0&nonce=u0cvnskm7vm3m&user=12004855264844732216&hash=bpfgan0npniibgvkiv82d7o229k6sg49"));
 
         moviesBannerlist =new ArrayList<>();
         moviesBannerlist.add(new Banners(1,"My Spy","https://www.setfilmizle.vip/wp-content/uploads/2020/04/my-spy-izle.jpg","https://www290.o0-1.com/token=J3riwN7ZwaJAq0uHSq42YQ/1607015040/46.154.0.0/133/8/13/278a4a141eae5f7b0d5d7587b7d6e138-1080p.mp4"));
@@ -154,7 +156,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
         TRMbannerlist.add(new Banners(1,"la familia","https://64.media.tumblr.com/1699ae7de166f4968d7b06870e3b68fd/61f85c26e254a608-ba/s1280x1920/499df68329025e5079cd9202f588c3592881fec6.jpg",""));
         TRMbannerlist.add(new Banners(1,"1987","https://64.media.tumblr.com/8dc4b2c2e514a299198552eaeca7ef62/tumblr_pt5be9pGtx1tuobsoo1_1280.jpg","https://www5.zippyshare.com/d/7P0zSOBz/1601616/Run.2020.TRALT.II.mp4"));
 
-        setBannerPageAdapter(seriesBannerslist);  //ON START SET
+
 
 
         
@@ -180,7 +182,6 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                             setBannerPageAdapter(seriesBannerslist); //ekleeee
                 }
             }
-
             @Override
             public void onTabUnselected(TabLayout.Tab tab) {
             }
@@ -228,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements NavigationView.On
                 for(DataSnapshot ds:snapshot.child("Films").child("Top").child("Series").getChildren()){
 
                     banners.add(new Banners(
-                            11,
+                            Integer.parseInt(ds.getKey().toString()),
                             ds.child("Name").getValue().toString(),
                             ds.child("ImageUrl").getValue().toString(),
                             ds.child("VideoId").getValue().toString()
